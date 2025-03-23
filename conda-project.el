@@ -3,10 +3,10 @@
 ;; Copyright (C) 2025 Gilbert Wong
 ;; Author: Gilbert Wong
 ;; URL: http://github.com/gilbertwong96/conda-project.el
-;; Version: 0.1
-;; Package-Version: 0.1
-;; Keywords: python, conda, project, tools
-;; Package-Requires: ((emacs "25.1") (s "1.13.0") (cl-lib) (yaml))
+;; Keywords: python, conda-project
+;; Package-Requires: ((emacs "26.1") (s "1.13.0") (cl-lib "0.7.1") (yaml "0.1.1") (pythonic ""))
+;; Version:0.1.0 ;;
+;; Package-Version:0.1.0
 
 ;;; Commentary:
 
