@@ -4,8 +4,9 @@
 
 ;; Author: Gilbert <gilbertwong96@icloud.com>
 ;; Maintainer: Gilbert <gilbertwong96@icloud.com>
+;; SPDX-License-Identifier: GPL-3.0-or-later
 ;; URL:  http://github.com/gilbertwong96/conda-project.el
-;; Version: 0.1.0
+;; Package-Version: 0.1.0
 ;; Package-file: conda-project.el
 ;; Package-Requires: ((emacs "28.1") (s "1.13.0") (yaml "0.1.1") (pythonic "0.2.0") (transient "0.8.6"))
 ;;
@@ -476,8 +477,8 @@ Note that the env is a hash table"
    (conda-project--external-environment)]
   ["Run" (conda-project--run-suffix)])
 
-(defalias 'conda-project-activate 'conda-project-env-activate-for-buffer)
-(defalias 'conda-project-deactivate 'conda-project-env-deactivate-for-buffer)
+(defalias 'conda-project-activate #'conda-project-env-activate-for-buffer)
+(defalias 'conda-project-deactivate #'conda-project-env-deactivate-for-buffer)
 
 (defun conda-project--execute-command (args-list)
   "Execute conda-project `COMMAND' with `ARGS-LIST'.
