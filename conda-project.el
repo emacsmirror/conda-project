@@ -133,7 +133,6 @@ Note that the env is a hash table"
 (defun conda-project--select-env (envs)
   "Let user select the env from the hash table `ENVS'."
   (let ((envs-count (hash-table-count envs)))
-    (message "%s" envs-count)
     (cond ((< envs-count 1) nil)
           ;; Get the only environment from envs
           ((= envs-count 1)
@@ -306,7 +305,6 @@ Note that the env is a hash table"
          (args (mapcar (lambda (arg) (s-split " " arg)) trans-args))
          (package-list (s-split " " packages))
          (flatten-args (flatten-list (append args package-list))))
-    (message "Flatten args: %s" flatten-args)
     (conda-project--execute-command (cons "init" flatten-args))))
 
 (defmacro conda-project--read-env-in-suffix ()
@@ -317,7 +315,6 @@ Note that the env is a hash table"
              (dir-finder (lambda (str) (string-match "--directory" str)))
              (project-dir (if-let ((found-dir (cl-find-if dir-finder trans-args)))
                               (cl-second (s-split " " found-dir))
-                            (message "%stest" (conda-project--get-current-dir))
                             (conda-project--get-current-dir)))
              (project-yml-file (file-name-concat project-dir "conda-project.yml"))
              (is-file-exists (file-exists-p project-yml-file))
@@ -355,7 +352,6 @@ Note that the env is a hash table"
   (let* ((trans-args (transient-args (oref transient-current-prefix command)))
          (args (mapcar (lambda (arg) (s-split " " arg)) trans-args))
          (flatten-args (flatten-list args)))
-    (message "Args: %s" flatten-args)
     (conda-project--execute-command (cons "install" flatten-args))))
 
 (transient-define-suffix conda-project--add-packages-suffix (packages)
@@ -398,7 +394,6 @@ Note that the env is a hash table"
   (let* ((trans-args (transient-args (oref transient-current-prefix command)))
          (args (mapcar (lambda (arg) (s-split " " arg)) trans-args))
          (flatten-args (flatten-list (append args (list command)))))
-    (message "Flatten args: %s" flatten-args)
     (conda-project--execute-command (cons "run" flatten-args))))
 
 (transient-define-prefix conda-project-init ()
