@@ -53,7 +53,7 @@
 
 (defcustom conda-project-env-mode-color "#5ABE37"
   "Set the color of the conda project env status in mode line."
-  :type 'string
+  :type 'color
   :group 'conda-project)
 
 (defcustom conda-project-output-height 15
@@ -68,7 +68,7 @@
   '(:propertize
     (:eval (when conda-project-env-current-name
              (propertize (concat "🅒 " conda-project-env-current-name " ")
-                         'face '(:foreground conda-project-env-mode-color :weight bold))))
+                         'face `(:foreground ,conda-project-env-mode-color :weight bold))))
     help-echo "Current conda project env"))
 
 (defun conda-project-mode-line-setup ()
