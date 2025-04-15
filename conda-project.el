@@ -89,7 +89,7 @@ Return nil if path cannot be found."
     default-directory))
 
 (defun conda-project--locate-project-root (current-dir)
-  "Find the project root dir based on current `CURRENT-DIR'.
+  "Find the project root dir based on current CURRENT-DIR.
 Return the project root path or if the conda-project root dir
 cannot be found, then return nil."
   (if (conda-project--check-config-files current-dir) current-dir
@@ -98,15 +98,15 @@ cannot be found, then return nil."
        (file-name-directory (directory-file-name current-dir))))))
 
 (defun conda-project--directory-is-root-p (directory)
-  "Return t if `DIRECTORY' is a conda-project root directory."
+  "Return t if DIRECTORY is a conda-project root directory."
   (let* ((dir (file-name-as-directory (expand-file-name directory)))
          (parent (file-name-directory (directory-file-name dir))))
     (string= dir parent)))
 
 (defun conda-project--check-config-files (config-dir)
-  "Check if required configuration files exist in `CONFIG-DIR'.
-Return nil if there are no required file `conda-project.yml' and
- `environment.yml', otherwise return t."
+  "Check if required configuration files exist in CONFIG-DIR.
+Return nil if there are no required file conda-project.yml and
+ environment.yml, otherwise return t."
   (let* ((required-files '("conda-project.yml" "environment.yml"))
          (missing-files
           (cl-remove-if
@@ -115,7 +115,7 @@ Return nil if there are no required file `conda-project.yml' and
     (if missing-files nil t)))
 
 (defun conda-project--infer-env-from-buffer (project-root)
-  "Get conda-project env from the `PROJECT-ROOT'."
+  "Get conda-project env from the PROJECT-ROOT."
   (when project-root
     ;; Set project root path
     (let* ((project-yml-file (file-name-concat project-root "conda-project.yml"))
@@ -123,7 +123,7 @@ Return nil if there are no required file `conda-project.yml' and
       (conda-project--select-env envs))))
 
 (defun conda-project--get-envs-from-yml (project-yml-file)
-  "Get envs from `PROJECT-YML-FILE'.
+  "Get envs from PROJECT-YML-FILE.
 Note that the env is a hash table"
   (interactive)
   (let ((yml-content (with-temp-buffer (insert-file-contents project-yml-file)
@@ -131,7 +131,7 @@ Note that the env is a hash table"
     (gethash "environments" (yaml-parse-string yml-content :object-key-type 'string))))
 
 (defun conda-project--select-env (envs)
-  "Let user select the env from the hash table `ENVS'."
+  "Let user select the env from the hash table ENVS."
   (let ((envs-count (hash-table-count envs)))
     (cond ((< envs-count 1) nil)
           ;; Get the only environment from envs
@@ -144,18 +144,18 @@ Note that the env is a hash table"
              (completing-read "Select environment:" env-names))))))
 
 (defun conda-project--get-env-bin-path (project-dir env)
-  "Return the env bin path based on `PROJECT-DIR' and `ENV'."
+  "Return the env bin path based on PROJECT-DIR and ENV."
   (file-name-concat project-dir "envs" env "bin"))
 
 (defun conda-project--append-path (env-bin-path)
-  "Append `ENV-BIN-PATH' to `EXE-PATH' and `PATH' environment variable."
+  "Append ENV-BIN-PATH to EXE-PATH and PATH environment variable."
   ;; Make buffer-local variable
   (make-local-variable 'exec-path)
   (setq exec-path (cons env-bin-path (exec-path)))
   (setenv "PATH" (concat env-bin-path path-separator (getenv "PATH"))))
 
 (defun conda-project--remove-path (project-path)
-  "Remove the `PROJECT-PATH' from `EXEC-PATH' and `PATH' environment variable."
+  "Remove the PROJECT-PATH from EXEC-PATH and PATH environment variable."
   (let ((path-remover (lambda (path) (string-match project-path path))))
     (make-local-variable 'exec-path)
     (setq exec-path (cl-remove-if path-remover exec-path))
@@ -165,7 +165,7 @@ Note that the env is a hash table"
                      (s-join path-separator)))))
 
 (defun conda-project--eshell-update-path ()
-  "Update `eshell-path-env' from the current `PATH'."
+  "Update `eshell-path-env' from the current PATH."
   (with-suppressed-warnings ((obsolete eshell-path-env))
     (if (version< emacs-version "29.1")
         (setq eshell-path-env (getenv "PATH"))
@@ -180,7 +180,7 @@ Note that the env is a hash table"
   (setq-default gud-pdb-command-name conda-project-system-gud-pdb-command-name))
 
 (defun conda-project--env-activate (project-root env)
-  "Activate the conda environment with `PROJECT-ROOT' and `ENV'."
+  "Activate the conda environment with PROJECT-ROOT and ENV."
 
   ;; first, deactivate any existing env
   (conda-project--env-deactivate project-root)
@@ -197,7 +197,7 @@ Note that the env is a hash table"
     (setq conda-project-env-current-name env)))
 
 (defun conda-project--env-deactivate (project-root)
-  "Deactivate `ENV' in current `PROJECT-ROOT'."
+  "Deactivate ENV in current PROJECT-ROOT."
   (setq python-shell-virtualenv-root nil)
   (pythonic-deactivate)
   (conda-project--remove-path project-root)
@@ -206,7 +206,7 @@ Note that the env is a hash table"
   (setq conda-project-env-current-name nil))
 
 (defun conda-project--env-reader (prompt _initial-input _history)
-  "Read the specific env with `PROMPT' based on conda-project.yml."
+  "Read the specific env with PROMPT based on conda-project.yml."
   (if-let* ((project-root (conda-project--find-root))
             (project-yml-file (file-name-concat project-root "conda-project.yml"))
             (is-file-exist (file-exists-p project-yml-file))
@@ -476,8 +476,8 @@ Note that the env is a hash table"
 (defalias 'conda-project-deactivate #'conda-project-env-deactivate-for-buffer)
 
 (defun conda-project--execute-command (args-list)
-  "Execute conda-project `COMMAND' with `ARGS-LIST'.
-If `SHOW-BUFFER' is non-nil, display the output buffer."
+  "Execute conda-project COMMAND with ARGS-LIST.
+If SHOW-BUFFER is non-nil, display the output buffer."
   (let* ((command "conda-project")
          (buffer-name "*Conda Project Output*")
          (output-buffer (progn
